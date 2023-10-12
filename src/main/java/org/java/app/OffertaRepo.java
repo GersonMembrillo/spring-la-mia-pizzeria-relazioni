@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OffertaRepo extends JpaRepository<Offerta, Integer> {
-	Offerta findByPizza(Pizza pizza);
+
 }

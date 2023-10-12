@@ -99,52 +99,73 @@ public class PizzaController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/offerta/create")
-	public String getOffertaForm(Model model) {
-		List<Pizza> pizze = pizzaServ.findAll();
-		model.addAttribute("pizze", pizze);
-		model.addAttribute("Offerta", new Offerta());
+	@GetMapping("/offerta/create/{pizza_id}")
+	public String getOffertaForm(@PathVariable("pizza_id") int id,
+			Model model
+		) {
+		
+		Pizza pizza = pizzaServ.findById(id);
+		
+		model.addAttribute("pizza", pizza);
+		model.addAttribute("offerta", new Offerta());
+		
 		return "offerta-create";
 	}
 
-	@PostMapping("/offerta/create")
-	public String createOfferta(@Valid @ModelAttribute Offerta Offerta,
-			BindingResult bindingResult, Model model) {
+	@PostMapping("/offerta/create/{pizza_id}")
+	public String storeOfferta(
+			@Valid @ModelAttribute Offerta Offerta,
+			BindingResult bindingResult,
+			@PathVariable("pizza_id") int id,
+			Model model
+		) {
+		
 		if (bindingResult.hasErrors()) {
-			return "offerta-create";
+			
+			return "offerca-create"; 
 		}
-		int pizzaId = Offerta.getPizza().getId();
-		Pizza pizza = pizzaServ.findById(pizzaId);
+		
+		Pizza pizza = pizzaServ.findById(id);
 		Offerta.setPizza(pizza);
+		
 		offertaServ.save(Offerta);
+		
+		return "redirect:/";
 
-		return "redirect:/" + pizzaId;
 	}
 
-	@GetMapping("/offerta/edit/{offertaId}")
-	public String getOffertaUpdate(@PathVariable int offertaId, Model model) {
-		Offerta Offerta = offertaServ.findById(offertaId);
-
-		model.addAttribute("Offerta", Offerta);
-
-		return "offerta-edit";
+	@GetMapping("/offerta/edit/{offerta_id}")
+	public String editOfferta(
+			@PathVariable("offerta_id") int id,
+			Model model
+		) {
+		
+		Offerta offerta = offertaServ.findById(id);
+		Pizza pizza = offerta.getPizza();
+		
+		model.addAttribute("pizza", pizza);
+		model.addAttribute("offerta", offerta);
+		
+		return "offerta-create"; 
 	}
 
-	@PostMapping("/offerta/edit/{offertaId}")
-	public String updateOfferta(@PathVariable int offertaId,
-			@Valid @ModelAttribute Offerta Offerta, @RequestParam("pizzaId") int pizzaId,
-			BindingResult bindingResult, Model model) {
+	@PostMapping("/offerta/edit/{offerta_id}")
+	public String updateOfferta(@Valid @ModelAttribute Offerta Offerta,
+			BindingResult bindingResult,
+			
+			Model model
+		) {
+		
 		if (bindingResult.hasErrors()) {
-			return "offerta-edit";
+			
+			return "offerta-create"; 
 		}
-
-		Pizza pizza = pizzaServ.findById(pizzaId);
-		Offerta.setPizza(pizza);
-
-		Offerta.setId(offertaId);
+		
 		offertaServ.save(Offerta);
-
-		return "redirect:/" + pizzaId;
+		
+		Pizza pizza = Offerta.getPizza();
+		
+		return "redirect:/" + pizza.getId();
 	}
 
 }

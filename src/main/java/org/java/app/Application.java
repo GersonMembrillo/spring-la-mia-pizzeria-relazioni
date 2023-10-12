@@ -1,5 +1,7 @@
 package org.java.app;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,8 +14,12 @@ public class Application implements CommandLineRunner {
 	@Autowired
 	private PizzaServ pizzaServ;
 	
+	@Autowired
+	private OffertaServ offertaServ;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+		
 	}
 
 	@Override
@@ -42,5 +48,16 @@ public class Application implements CommandLineRunner {
   		pizzaServ.save(pizza5);
   		
   		System.out.println("Insert OK");
+  		
+  		Offerta offerta1 = new Offerta("Due pizze al prezzo di una!", LocalDate.now(), 
+				LocalDate.parse("2023-11-20"), pizza1);
+		Offerta offerta2 = new Offerta("Paghi 3, prendi 2!", LocalDate.now(), 
+				LocalDate.parse("2023-12-25"), pizza2);
+		Offerta offerta3 = new Offerta("1 bibita gratis con l'acquisto di 2 pizze!", LocalDate.now(), 
+				LocalDate.parse("2023-12-31"), pizza4);
+		
+		offertaServ.save(offerta1);
+		offertaServ.save(offerta2);
+		offertaServ.save(offerta3);
 	}
 }

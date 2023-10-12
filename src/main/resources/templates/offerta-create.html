@@ -1,55 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-		integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-		crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<title> offerta Create</title>
+	<title>Insert title here</title>
 </head>
 
 <body class="">
 	<th:block th:replace="~{nav}" />
 
-	<h1 class="m-4 text-center">Nuova offerta</h1>
-
 	<div class="text-center">
-		<form class="row" th:object="${Offerta}" method="POST">
-
-			<label class="form-label" for="pizza">Pizza</label>
-			<select class="form-control" id="pizza" name="pizza" th:field="*{pizza.id}">
-				<option th:each="pizza : ${pizze}" th:value="${pizza.id}" th:text="${pizza.name}"></option>
-			</select>
-
-			<label class="form-label" for="startDate">Inizio Offerta</label>
-			<input class="form-control" type="date" id="startDate" name="startDate" th:field="*{startDate}" />
-
-			<label class="form-label" for="endDate">Scadenza Offerta</label>
-			<input class="form-control" type="date" id="endDate" name="endDate" th:field="*{endDate}" />
-
-			<label class="form-label" for="titolo">Le offerte più richieste</label>
-			<select class="form-control" id="titolo" name="titolo" th:field="*{titolo}">
-				<option value="prendi 2 e paghi 1">2 al prezzo di 1</option>
-				<option value="prendi 3 e paghi 2">ogni 2 pizze la terza è in omaggio</option>
-				<option value="bibita grande gratis con 2 pizze">Bibita in omaggio con l'acquisto di due pizze</option>
-			</select>
-		</form>
+	<h1 class="m-4" th:if="${offerta.id < 1}">[[${pizza.name}]]: Aggiungi Offerta</h1>
+	<h1 class="m-4" th:if="${offerta.id > 0}">[[${pizza.name}]]: Modifica Offerta</h1>
+	<form
+		th:object="${offerta}"
+		method="POST">
+		
+		<!-- se togli questa roba ti da errore... serve per indicare a quale pizza va l'offerta -->
+		<input type="text" name="id" th:field="*{id}" hidden >
+		<input type="text" name="pizza" th:field="*{pizza}" hidden >
+		
+		<label class="form-label" for="title">Titolo</label>
+		<input class="form-control" type="text" name="title" th:field="*{title}" >
+		<br />
+		<label class="form-label" for="startDate">Inizio</label>
+		<input class="form-control" type="date" name="startDate" th:field="*{htmlStartDate}" >
+		<br />
+		<label class="form-label" for="endDate">Fine</label>
+		<input class="form-control" type="date" name="endDate" th:field="*{htmlEndDate}" >
+		<br />
+		<input type="submit" class="btn btn-success" th:value="${offerta.id < 1 ? 'Aggiungi' : 'Modifica'}" >
+	</form>
 	</div>
-	
-	<div class="d-flex flex-column align-items-center justify-content-center">
-
-		<div class="m-2">
-			<input class="mx-2 btn btn-success shadow" type="submit" value="CREATE" />
-			<input class="btn btn-warning shadow" type="reset" value="RESET" />
-		</div>
-		<a class="btn btn-danger shadow" th:href="@{/}"></i>
-			Torna indietro </a>
-
-	</div>
-	
 	<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
 </body>
 

@@ -3,6 +3,7 @@ package org.java.app;
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Pizza {
     private double price;
     
     @OneToMany(mappedBy= "pizza")
-	  private List<Offerta> offerta;
+	  private List<Offerta> offerte;
 
     public Pizza() { }
 
@@ -101,6 +102,13 @@ public class Pizza {
         // se no, restituisce una stringa vuota
         return "";
     }
+    
+    public List<Offerta> getOfferts() {
+		return offerte;
+	}
+	public void setOfferts(List<Offerta> offerte) {
+		this.offerte = offerte;
+	}
 
     @Override
     public String toString() {
