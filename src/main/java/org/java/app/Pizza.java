@@ -1,8 +1,10 @@
 package org.java.app;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,8 +12,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+
 
 @Entity
 public class Pizza {
@@ -36,14 +40,18 @@ public class Pizza {
     
     @OneToMany(mappedBy= "pizza")
 	  private List<Offerta> offerte;
+    
+    @ManyToMany
+	private List<Ingrediente> ingredienti;
 
     public Pizza() { }
 
-    public Pizza(String name, String description, String photo, double price) {
+    public Pizza(String name, String description, String photo, double price, Ingrediente...ingredienti) {
         setName(name);
         setDescription(description);
         setPhoto(photo);
         setPrice(price);
+        setIngredienti(Arrays.asList(ingredienti));
     }
 
     public int getId() {
@@ -108,6 +116,33 @@ public class Pizza {
 	}
 	public void setOfferts(List<Offerta> offerte) {
 		this.offerte = offerte;
+	}
+	
+	public List<Ingrediente> getIngredienti() {
+		return ingredienti;
+	}
+	
+	public void setIngredienti(List<Ingrediente> ingredienti) {
+		this.ingredienti = ingredienti;
+	}
+	
+	public boolean hasIngrediente(Ingrediente ingrediente) {
+		
+		if (getIngredienti() == null) return false;
+		
+		for (Ingrediente i : getIngredienti()) 
+			if (ingrediente.getId() == i.getId())
+				return true;
+		
+		return false;
+	}
+	public void addIngrediente(Ingrediente ingrediente) {
+		
+		getIngredienti().add(ingrediente);
+	}
+	public void removeIngrediente(Ingrediente ingrediente) {
+		
+		getIngredienti().remove(ingrediente);
 	}
 
     @Override

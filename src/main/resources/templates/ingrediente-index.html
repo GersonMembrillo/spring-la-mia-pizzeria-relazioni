@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Ingredienti:</h1>
+	<a href="/ingrediente/create">Aggiungi ingrediente</a>
+	<ul>
+		<li
+			th:each="ingrediente : ${ingredienti}"
+			th:object="${ingrediente}"
+		>
+			[[*{name}]]
+		</li>
+	</ul>
+</body>
+</html>

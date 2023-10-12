@@ -14,7 +14,8 @@
 
 	<div class="text-center">
 
-		<h1 class="m-4">Aggiungi la tua pizza!</h1>
+		<h1 class="m-4" th:if="${pizza.id < 1}">Aggiungi la tua pizza!</h1>
+		<h1 class="m-4" th:if="${pizza.id > 0}">Modifica la tua pizza!</h1>
 		<form th:object="${pizza}" method="POST">
 
 
@@ -58,7 +59,15 @@
 				</ul>
 				<br />
 			</div>
-			<button type="submit" class="btn btn-success">Aggiungi</button>
+			<div th:each="ingrediente : ${ingredienti}" th:object="${ingrediente}">
+				<input type="checkbox" th:id="${'ingredienti-' + ingrediente.id}" th:value="*{id}"
+					th:field="${pizza.ingredienti}">
+				<label th:for="${'ingredienti-' + ingrediente.id}">
+					[[*{name}]]
+				</label>
+			</div>
+
+			<input class="btn btn-success" type="submit" th:value="${pizza.id > 0 ? 'UPDATE' : 'CREATE'}" />
 		</form>
 
 	</div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body th:object="${ingrediente}">
+	<h1>Nuovo ingrediente</h1>
+	<form
+		method="POST"
+	>
+		<label for="name">Nome ingrediente</label>
+		<input type="text" id="name" th:field="*{name}">
+		<br />
+		<label for="description">Description</label>
+		<input type="text" id="name" th:field="*{description}">
+		<br />
+		<div
+			th:each="pizza : ${pizze}"
+			th:object="${pizza}"
+		>
+			<input 
+				type="checkbox" 
+				th:id="${'pizza-' + pizza.id}"
+				th:value="*{id}"
+				th:field="${ingrediente.pizze}"
+			>
+			<label th:for="${'pizza-' + pizza.id}">[[*{title}]]</label>
+		</div>
+		<input type="submit" value="CREATE">
+	</form>
+</body>
+</html>
