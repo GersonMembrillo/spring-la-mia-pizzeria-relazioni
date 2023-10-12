@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+		integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<title> offerta Create</title>
+</head>
+
+<body class="">
+	<th:block th:replace="~{nav}" />
+
+	<h1 class="m-4 text-center">Modifica l'offerta</h1>
+
+	<div class="text-center">
+		<form class="row" th:object="${Offerta}" method="POST">
+			
+			<label class="form-label" for="pizza">Pizza</label>
+			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" name="pizzaId" th:value="${Offerta.pizza.id}" />
+
+			<label class="form-label" for="startDate">Inizio offerta</label>
+			<input class="w-100" type="date" id="startDate" name="startDate" th:field="*{startDate}" />
+
+			<label class="form-label" for="endDate">Scadenza offerta</label>
+			<input class="w-100" type="date" id="endDate" name="endDate" th:field="*{endDate}" />
+
+			<label class="form-label" for="titolo">Le offerte più richieste</label>
+			<select class="w-50" id="titolo" name="titolo" th:field="*{titolo}">
+				<option value="prendi 2 e paghi 1" th:selected="${Offerta.titolo == 'prendi 2 e paghi 1'}">2 al
+					prezzo di 1</option>
+				<option value="prendi 3 e paghi 2" th:selected="${Offerta.titolo == 'prendi 3 e paghi 2'}">Ogni
+					2 pizze la terza è in omaggio</option>
+				<option value="bibita grande gratis con 2 pizze"
+					th:selected="${Offerta.titolo == 'bibita grande gratis con 2 pizze'}">Bibita in omaggio con
+					l'acquisto di due pizze</option>
+			</select>
+		</form>
+	</div>
+
+	<div class="d-flex flex-column align-items-center justify-content-center">
+
+		<div class="m-2">
+			<input class="mx-2 btn btn-success shadow" type="submit" value="CHANGE" />
+			<input class="btn btn-warning shadow" type="reset" value="RESET" />
+		</div>
+		<a class="btn btn-danger shadow" th:href="@{/}"></i>
+			Torna indietro </a>
+
+	</div>
+
+
+	<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+<style>
+	.form-control {
+		width: 50%;
+		margin: 0 auto;
+	}
+</style>
+
+</html>

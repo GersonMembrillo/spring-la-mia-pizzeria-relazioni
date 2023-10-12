@@ -19,6 +19,9 @@ public class PizzaController {
 
 	@Autowired
 	private PizzaServ pizzaServ;
+	
+	@Autowired
+	private OffertaServ offertaServ;
 
 	@GetMapping
 	public String getIndex(@RequestParam(required = false, name = "search") String searchTitle, Model model) {
@@ -95,4 +98,54 @@ public class PizzaController {
 
 		return "redirect:/";
 	}
+	
+	@GetMapping("/offerta/create")
+	public String getOffertaForm(Model model) {
+		List<Pizza> pizze = pizzaServ.findAll();
+		model.addAttribute("pizze", pizze);
+		model.addAttribute("Offerta", new Offerta());
+		return "offerta-create";
+	}
+
+	@PostMapping("/offerta/create")
+	public String createOfferta(@Valid @ModelAttribute Offerta Offerta,
+			BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			return "offerta-create";
+		}
+		int pizzaId = Offerta.getPizza().getId();
+		Pizza pizza = pizzaServ.findById(pizzaId);
+		Offerta.setPizza(pizza);
+		offertaServ.save(Offerta);
+
+		return "redirect:/" + pizzaId;
+	}
+
+	@GetMapping("/offerta/edit/{offertaId}")
+	public String getOffertaUpdate(@PathVariable int offertaId, Model model) {
+		Offerta Offerta = offertaServ.findById(offertaId);
+
+		model.addAttribute("Offerta", Offerta);
+
+		return "offerta-edit";
+	}
+
+	@PostMapping("/offerta/edit/{offertaId}")
+	public String updateOfferta(@PathVariable int offertaId,
+			@Valid @ModelAttribute Offerta Offerta, @RequestParam("pizzaId") int pizzaId,
+			BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			return "offerta-edit";
+		}
+
+		Pizza pizza = pizzaServ.findById(pizzaId);
+		Offerta.setPizza(pizza);
+
+		Offerta.setId(offertaId);
+		offertaServ.save(Offerta);
+
+		return "redirect:/" + pizzaId;
+	}
+
 }
+

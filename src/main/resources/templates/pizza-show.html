@@ -31,10 +31,38 @@
 						</form>
 					</div>
 				</div>
+				
 			</div>
+			
 		</body>
+		
 
 	</div>
+	<div class="mt-4 text-center">
+				<h2>Offerta Speciale</h2>
+				<div class="">
+
+					<p th:if="${Offerta != null}">
+						<strong>Data di inizio:</strong> [[${Offerta.startDate}]]<br>
+						<strong>Data di scadenza:</strong> [[${Offerta.endDate}]]<br>
+						<strong>Titolo:</strong> [[${Offerta.titolo}]]
+					</p>
+					<p th:if="${Offerta == null}">Nessuna Offerta speciale disponibile per questa pizza.</p>
+					<div>
+
+						<a th:if="${Offerta != null and Offerta.id != null}"
+							class="btn btn-warning ms-3"
+							th:href="@{'offerta/edit/' + ${Offerta.id}}">Modifica Offerta</a>
+
+	
+						<a th:unless="${Offerta != null and Offerta.id != null}"
+							class="btn btn-success ms-3" th:href="@{'offerta/create'}">Crea nuova offerta</a>
+					</div>
+
+
+
+				</div>
+			</div>
 
 	<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
 </body>
