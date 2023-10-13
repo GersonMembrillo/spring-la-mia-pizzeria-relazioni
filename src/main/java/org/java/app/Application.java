@@ -28,9 +28,9 @@ public class Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Ingrediente ingrediente1 = new Ingrediente("Farina", "Di grano tenero");
+		Ingrediente ingrediente1 = new Ingrediente("Farina", "di grano tenero");
 		Ingrediente ingrediente2 = new Ingrediente("Pomodoro", "San Marzano");
-		Ingrediente ingrediente3 = new Ingrediente("Mozzarella", "Formaggio");
+		Ingrediente ingrediente3 = new Ingrediente("Mozzarella", "formaggio");
 		
 		ingredienteServ.save(ingrediente1);
 		ingredienteServ.save(ingrediente2);

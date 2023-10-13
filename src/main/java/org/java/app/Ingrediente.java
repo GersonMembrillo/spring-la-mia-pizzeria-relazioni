@@ -1,6 +1,5 @@
 package org.java.app;
 
-import java.util.Arrays;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -17,19 +16,18 @@ public class Ingrediente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@ManyToMany(mappedBy = "ingredienti")
+	private List<Pizza> pizze;
+	
 	@Column(nullable = false)
 	private String name;
 	private String description;
 	
-	@ManyToMany(mappedBy = "ingredienti")
-	private List<Pizza> pizze;
-	
 	public Ingrediente() { }
-	public Ingrediente(String name, String description, Pizza... pizze) {
+	public Ingrediente(String name, String description) {
 		
 		setName(name);
 		setDescription(description);
-		setPizze(Arrays.asList(pizze));
 	}
 	
 	public int getId() {
@@ -57,29 +55,27 @@ public class Ingrediente {
 		this.pizze = pizze;
 	}
 	
-	public boolean hasPizza(Pizza pizza) {
-		
-		if (getPizze() == null) return false;
-		
-		for (Pizza p : getPizze()) 
-			if (p.getId() == pizza.getId())
-				return true;
-		
-		return false;
-	}
-	public void addPizze(Pizza... pizze) {
-		
-		getPizze().addAll(Arrays.asList(pizze));
-	}
-	public void removePizze(Pizza... pizze) {
-		
-		getPizze().removeAll(Arrays.asList(pizze));
-	}
-	
 	@Override
 	public String toString() {
 		
 		return "[" + getId() + "] " + getName() + "\n" + getDescription();
+	}
+	
+	@Override
+	public int hashCode( ) {
+		
+		return getId();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (!(obj instanceof  Ingrediente)) return false;
+		
+		Ingrediente objIng = (Ingrediente) obj;
+		
+		return getId() == objIng.getId();
+		
 	}
 }
 

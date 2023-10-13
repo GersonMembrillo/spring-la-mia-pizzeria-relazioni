@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,7 +44,6 @@ public class Pizza {
 	private List<Ingrediente> ingredienti;
 
     public Pizza() { }
-
     public Pizza(String name, String description, String photo, double price, Ingrediente...ingredienti) {
         setName(name);
         setDescription(description);
@@ -126,21 +124,7 @@ public class Pizza {
 		this.ingredienti = ingredienti;
 	}
 	
-	public boolean hasIngrediente(Ingrediente ingrediente) {
-		
-		if (getIngredienti() == null) return false;
-		
-		for (Ingrediente i : getIngredienti()) 
-			if (ingrediente.getId() == i.getId())
-				return true;
-		
-		return false;
-	}
-	public void addIngrediente(Ingrediente ingrediente) {
-		
-		getIngredienti().add(ingrediente);
-	}
-	public void removeIngrediente(Ingrediente ingrediente) {
+	public void deleteIngrediente(Ingrediente ingrediente) {
 		
 		getIngredienti().remove(ingrediente);
 	}

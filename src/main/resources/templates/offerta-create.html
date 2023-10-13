@@ -22,14 +22,17 @@
 		<input type="text" name="id" th:field="*{id}" hidden >
 		<input type="text" name="pizza" th:field="*{pizza}" hidden >
 		
-		<label class="form-label" for="title">Titolo</label>
+		<label class="form-label fs-5" for="title">Nome</label>
 		<input class="form-control" type="text" name="title" th:field="*{title}" >
+		<div class="form-text">Aggiungi il nome dell'offerta</div>
 		<br />
-		<label class="form-label" for="startDate">Inizio</label>
+		<label class="form-label fs-5" for="startDate">Inizio</label>
 		<input class="form-control" type="date" name="startDate" th:field="*{htmlStartDate}" >
+		<div class="form-text">Aggiungi la data di partenza</div>
 		<br />
-		<label class="form-label" for="endDate">Fine</label>
+		<label class="form-label fs-5" for="endDate">Fine</label>
 		<input class="form-control" type="date" name="endDate" th:field="*{htmlEndDate}" >
+		<div class="form-text">Aggiungi la data di scadenza</div>
 		<br />
 		<input type="submit" class="btn btn-success" th:value="${offerta.id < 1 ? 'Aggiungi' : 'Modifica'}" >
 	</form>

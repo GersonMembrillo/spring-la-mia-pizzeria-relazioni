@@ -22,6 +22,9 @@ public class PizzaController {
 	
 	@Autowired
 	private OffertaServ offertaServ;
+	
+	@Autowired 
+	private IngredienteServ ingredienteServ;
 
 	@GetMapping
 	public String getIndex(@RequestParam(required = false, name = "search") String searchTitle, Model model) {
@@ -39,15 +42,20 @@ public class PizzaController {
 
 	@GetMapping("/{id}")
 	public String getShow(@PathVariable Integer id, Model model) {
+		
 		Pizza pizza = pizzaServ.findById(id);
 		model.addAttribute("pizza", pizza);
+		
 		return "pizza-show";
 	}
 
 	@GetMapping("/create")
 	public String getCreateForm(Model model) {
+		
+		List<Ingrediente> ingredienti = ingredienteServ.findAll();
 
 		model.addAttribute("pizza", new Pizza());
+		model.addAttribute("ingredienti", ingredienti);
 
 		return "pizza-create";
 	}
@@ -60,9 +68,12 @@ public class PizzaController {
 
 	@GetMapping("/edit/{id}")
 	public String getEditForm(@PathVariable int id, Model model) {
-
+		
+		List<Ingrediente> ingredienti = ingredienteServ.findAll();
 		Pizza pizza = pizzaServ.findById(id);
+		
 		model.addAttribute("pizza", pizza);
+		model.addAttribute("ingredienti", ingredienti);
 
 		return "pizza-create";
 	}
@@ -78,23 +89,6 @@ public class PizzaController {
 
 		Pizza pizza = pizzaServ.findById(id);
 		pizzaServ.deletePizza(pizza);
-
-		return "redirect:/";
-	}
-
-	private String storePizza(Pizza pizza, BindingResult bindingResult) {
-
-		System.out.println("pizza:\n" + pizza);
-
-		if (bindingResult.hasErrors()) {
-
-			System.out.println("Errors");
-			bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).forEach(System.out::println);
-
-			return "pizza-form";
-		}
-
-		pizzaServ.save(pizza);
 
 		return "redirect:/";
 	}
@@ -122,7 +116,7 @@ public class PizzaController {
 		
 		if (bindingResult.hasErrors()) {
 			
-			return "offerca-create"; 
+			return "offerta-create"; 
 		}
 		
 		Pizza pizza = pizzaServ.findById(id);
@@ -150,9 +144,9 @@ public class PizzaController {
 	}
 
 	@PostMapping("/offerta/edit/{offerta_id}")
-	public String updateOfferta(@Valid @ModelAttribute Offerta Offerta,
+	public String updateOfferta(@Valid @ModelAttribute Offerta offerta,
 			BindingResult bindingResult,
-			
+			@PathVariable("offerta_id") int id,
 			Model model
 		) {
 		
@@ -161,12 +155,31 @@ public class PizzaController {
 			return "offerta-create"; 
 		}
 		
-		offertaServ.save(Offerta);
+		Offerta oldOfferta = offertaServ.findById(id);
+		Pizza pizza = oldOfferta.getPizza();
+		offerta.setPizza(pizza);
 		
-		Pizza pizza = Offerta.getPizza();
+		offertaServ.save(offerta);
 		
-		return "redirect:/" + pizza.getId();
+		return "redirect:/pizzas/" + pizza.getId();
 	}
+	
+	private String storePizza(Pizza pizza, BindingResult bindingResult) {
+		
+		System.out.println("pizza:\n" + pizza);
 
+		if (bindingResult.hasErrors()) {
+
+			System.out.println("Errors");
+			bindingResult.getAllErrors().stream()
+					.map(e -> e.getDefaultMessage())
+				.forEach(System.out::println);
+
+			return "pizza-create";
+		}
+
+		pizzaServ.save(pizza);
+
+		return "redirect:/";
+	}
 }
-
